@@ -100,7 +100,7 @@ public class LoginServlet extends HttpServlet {
                 // store the username in a session variable
                 session.setAttribute("username", username);
 
-                // redirect to home page
+                // redirect to home 
                 response.sendRedirect("home");
             } else {
                 // authentication failed, display error message and forward to login page

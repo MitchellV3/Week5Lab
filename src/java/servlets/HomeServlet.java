@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -58,9 +59,20 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
-                .forward(request, response);
+           HttpSession session = request.getSession(false);
+        
+        if(session != null && session.getAttribute("username") != null) {
+            String username = (String) session.getAttribute("username");
+            
+            // show home page with welcome message
+            request.setAttribute("welcomeMessage", "Welcome, " + username);
+            getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
+               .forward(request, response);
+        } else {
+            // session does not exist or username is not set, redirect to login page
+            response.sendRedirect("login");
+        }
+
     }
 
     /**
