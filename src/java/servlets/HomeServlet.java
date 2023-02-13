@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Mitchell
  */
-@WebServlet(urlPatterns = {"/home"})
 public class HomeServlet extends HttpServlet {
 
     /**
@@ -60,6 +59,8 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
+                .forward(request, response);
     }
 
     /**
@@ -83,7 +84,7 @@ public class HomeServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Week5Lab_MyLogin";
     }// </editor-fold>
 
 }

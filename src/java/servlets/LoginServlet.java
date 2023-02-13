@@ -6,6 +6,8 @@ package servlets;
  * and open the template in the editor.
  */
 
+import classes.AccountService;
+import classes.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -85,7 +87,37 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+           
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        if(username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
+            AccountService accountService = new AccountService();
+            User user = accountService.login(username, password);
+
+            if(user != null) {
+                HttpSession session = request.getSession();
+
+                // store the username in a session variable
+                session.setAttribute("username", username);
+
+                // redirect to home page
+                response.sendRedirect("home");
+            } else {
+                // authentication failed, display error message and forward to login page
+                request.setAttribute("errorMessage", "Invalid username or password");
+                request.setAttribute("username", username);
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                .forward(request, response);
+            }
+    } else {
+        // username or password is empty, display an error message and forward to login.jsp
+        request.setAttribute("errorMessage", "Please enter username and password");
+        request.setAttribute("username", username);
+        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                .forward(request, response);
+    }
+
+       // response.sendRedirect(request.getContextPath() + "/home.jsp");
     }
 
     /**
@@ -95,7 +127,7 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Week5Lab_MyLogin";
     }// </editor-fold>
 
 }
