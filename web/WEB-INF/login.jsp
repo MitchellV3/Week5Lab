@@ -15,7 +15,7 @@
         <h1>Login</h1>
         <form method="post" action="login">
           <p>Username:</p>
-          <input type="text" name="username"><br>
+          <input type="text" name="username" value="${username}"><br>
           <p>Password:</p>
           <input type="text" name="password"><br>          
           <br>
